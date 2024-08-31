@@ -16,6 +16,10 @@ from nltk.parse.malt import MaltParser as NLTKMaltParser
 from tqdm import tqdm
 from typing import List, Tuple
 import os
+import spacy
+from spacy.tokens import Doc
+from tqdm import tqdm
+from typing import List, Tuple
 
 class MaltParser(NLTKMaltParser):
     """این کلاس شامل توابعی برای شناسایی وابستگی‌های دستوری است.
@@ -133,7 +137,7 @@ class MaltParser(NLTKMaltParser):
                 raise Exception("MaltParser parsing failed: %s" % " ".join(cmd))
 
             return (
-                DependencyGraph(item, top_relation_label='root')
+                DependencyGraph(item,top_relation_label='root')
                 for item in open(output_file.name, encoding="utf8").read().split("\n\n") # noqa: SIM115, PTH123
                 if item.strip()
             )
@@ -362,7 +366,7 @@ class SpacyDependencyParser(MaltParser):
             conll_list.append(conll_sample)
 
         return (
-            DependencyGraph(item)
+            DependencyGraph(item, top_relation_label='root')
             for item in conll_list
             if item.strip()
         )
