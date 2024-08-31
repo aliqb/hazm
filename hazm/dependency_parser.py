@@ -322,7 +322,7 @@ class SpacyDependencyParser(MaltParser):
         for sentence in sentences:
             self._add_sentence2dict(sentence)
 
-        tagged_sentences = self.tagger.tag_sents(sentences,universal_tag=True)
+        tagged_sentences = self.tagger.tag_sents(sentences)
         return self.parse_tagged_sents(tagged_sentences, verbose)
 
 
