@@ -361,7 +361,8 @@ class SpacyDependencyParser(MaltParser):
         for doc_id , doc in enumerate(docs):
             pos_tags = [tag for w , tag in sentences[doc_id]]
             for i in range(len(doc)):
-                docs[doc_id][i].pos_ = pos_tags[i]
+                docs[doc_id][i].pos_ = pos_tags[i].split(',')[0]
+                docs[doc_id][i].tag_ = pos_tags[i]
             conll_sample = self._spacy_to_conll(docs[doc_id])
             conll_list.append(conll_sample)
 
