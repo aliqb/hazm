@@ -117,9 +117,6 @@ class Lemmatizer:
 
         """
         if not pos and word in self.words:
-            stem_word = self._stem_plural(word)
-            if stem_word in self.words:
-                return stem_word
             return word
 
         if (not pos or pos == "VERB") and word in self.verbs:
@@ -132,9 +129,6 @@ class Lemmatizer:
             return word
 
         if word in self.words:
-            stem_word = self._stem_plural(word)
-            if stem_word in self.words:
-                return stem_word
             return word
         plural_stem_word = self._stem_plural(word)
         if plural_stem_word in self.words:
