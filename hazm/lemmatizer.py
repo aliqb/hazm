@@ -62,6 +62,26 @@ class Lemmatizer:
                         self.verbs["ن" + bon + "ه_" + after_verb] = verb
                     for before_verb in tokenizer.before_verbs:
                         self.verbs[before_verb + "_" + bon] = verb
+                        
+    def _stem_plural(self: "Lemmatizer", word: str) ->str:
+        plural_endings = [
+            "ها",
+            "ات",
+            "ون",
+            "ین",
+        ]
+        if word.endswith('ان'):
+            single_word = word[:-2] 
+            if single_word.endswith('گ'):
+                main_single_word = single_word[:-1] + 'ه'
+                if main_single_word in self.words:
+                    return  main_single_word
+            return single_word
+        for ending in plural_endings:
+            if word.endswith(ending):
+                return word[:-len(ending)]
+                
+        
 
     def lemmatize(self: "Lemmatizer", word: str, pos: str = "") -> str:
         """ریشهٔ کلمه را پیدا می‌کند.
@@ -97,6 +117,9 @@ class Lemmatizer:
 
         """
         if not pos and word in self.words:
+            stem_word = self._stem_plural(word)
+            if stem_word in self.words:
+                return stem_word
             return word
 
         if (not pos or pos == "VERB") and word in self.verbs:
@@ -109,8 +132,13 @@ class Lemmatizer:
             return word
 
         if word in self.words:
+            stem_word = self._stem_plural(word)
+            if stem_word in self.words:
+                return stem_word
             return word
-
+        plural_stem_word = self._stem_plural(word)
+        if plural_stem_word in self.words:
+            return plural_stem_word
         stem = self.stemmer.stem(word)
         if stem and stem in self.words:
             return stem
